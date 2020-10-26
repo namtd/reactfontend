@@ -21,25 +21,41 @@ import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
+const mapStateToProps = state => ({
+  staffInfo: state,
+})
+
+const mapDispatchToProps = dispatch => {
+
 }
 
-const rows = [
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Donut', 452, 25.0, 51, 4.9),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-  createData('Honeycomb', 408, 3.2, 87, 6.5),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Jelly Bean', 375, 0.0, 94, 0.0),
-  createData('KitKat', 518, 26.0, 65, 7.0),
-  createData('Lollipop', 392, 0.2, 98, 0.0),
-  createData('Marshmallow', 318, 0, 81, 2.0),
-  createData('Nougat', 360, 19.0, 9, 37.0),
-  createData('Oreo', 437, 18.0, 63, 4.0),
-];
+function createData(stt, cardNumber, name, dept, gender, startDate, presenter, presenterCardNumber, bp) {
+  return { stt, cardNumber, name, dept, gender, startDate, presenter, presenterCardNumber, bp };
+}
+
+const rows = (jsonData) => {
+  let data = [];
+
+  jsonData.map((row) => {
+    if (!isNaN(row[0])) {
+      data.push(createData(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8]));
+    }
+  })
+  //   createData('Cupcake', 305, 3.7, 67, 4.3),
+  //   createData('Donut', 452, 25.0, 51, 4.9),
+  //   createData('Eclair', 262, 16.0, 24, 6.0),
+  //   createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
+  //   createData('Gingerbread', 356, 16.0, 49, 3.9),
+  //   createData('Honeycomb', 408, 3.2, 87, 6.5),
+  //   createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
+  //   createData('Jelly Bean', 375, 0.0, 94, 0.0),
+  //   createData('KitKat', 518, 26.0, 65, 7.0),
+  //   createData('Lollipop', 392, 0.2, 98, 0.0),
+  //   createData('Marshmallow', 318, 0, 81, 2.0),
+  //   createData('Nougat', 360, 19.0, 9, 37.0),
+  //   createData('Oreo', 437, 18.0, 63, 4.0),
+  return data;
+};
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -67,27 +83,30 @@ function stableSort(array, comparator) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-const headCells = [
-  { id: 'name', numeric: false, disablePadding: true, label: 'Username' },
-  { id: 'calories', numeric: true, disablePadding: false, label: 'Card Number' },
-  { id: 'fat', numeric: true, disablePadding: false, label: 'Department' },
-  { id: 'carbs', numeric: true, disablePadding: false, label: 'Gender' },
-  { id: 'protein', numeric: true, disablePadding: false, label: 'Start Date' },
-  { id: 'dateRegDrawer', numeric: true, disablePadding: false, label: 'Date Reg Drawer' },
+const HeaderCells = (headCells) => [
+  { id: 'stt', numeric: false, disablePadding: true, label: headCells[0] },
+  { id: 'cardNumber', numeric: true, disablePadding: false, label: headCells[1] },
+  { id: 'name', numeric: true, disablePadding: false, label: headCells[2] },
+  { id: 'dept', numeric: true, disablePadding: false, label: headCells[3] },
+  { id: 'gender', numeric: true, disablePadding: false, label: headCells[4] },
+  { id: 'startDate', numeric: true, disablePadding: false, label: headCells[5] },
+  { id: 'presenter', numeric: true, disablePadding: false, label: headCells[6] },
+  { id: 'presenterCardNumber', numeric: true, disablePadding: false, label: headCells[7] },
+  { id: 'bp', numeric: true, disablePadding: false, label: headCells[8] },
 ];
 
 const StyledTableCell = withStyles((theme) => ({
-    head: {
-      backgroundColor: '#D2691E',
-      color: 'black',
-    },
-    body: {
-      fontSize: 14,
-    },
-  }))(TableCell);
+  head: {
+    backgroundColor: '#D2691E',
+    color: 'black',
+  },
+  body: {
+    fontSize: 14,
+  },
+}))(TableCell);
 
 function EnhancedTableHead(props) {
-  const { classes, onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } = props;
+  const { classes, onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort, headCells } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
@@ -113,7 +132,7 @@ function EnhancedTableHead(props) {
             <TableSortLabel
               active={orderBy === headCell.id}
               direction={orderBy === headCell.id ? order : 'asc'}
-              onClick={createSortHandler(headCell.id)}
+              onClick={createSortHandler(headCell.isd)}
             >
               {headCell.label}
               {orderBy === headCell.id ? (
@@ -137,6 +156,7 @@ EnhancedTableHead.propTypes = {
   order: PropTypes.oneOf(['asc', 'desc']).isRequired,
   orderBy: PropTypes.string.isRequired,
   rowCount: PropTypes.number.isRequired,
+  headCells: PropTypes.array.isRequired,
 };
 
 const useToolbarStyles = makeStyles((theme) => ({
@@ -147,13 +167,13 @@ const useToolbarStyles = makeStyles((theme) => ({
   highlight:
     theme.palette.type === 'light'
       ? {
-          color: theme.palette.secondary.main,
-          backgroundColor: lighten(theme.palette.secondary.light, 0.85),
-        }
+        color: theme.palette.secondary.main,
+        backgroundColor: lighten(theme.palette.secondary.light, 0.85),
+      }
       : {
-          color: theme.palette.text.primary,
-          backgroundColor: theme.palette.secondary.dark,
-        },
+        color: theme.palette.text.primary,
+        backgroundColor: theme.palette.secondary.dark,
+      },
   title: {
     flex: '1 1 100%',
   },
@@ -174,10 +194,10 @@ const EnhancedTableToolbar = (props) => {
           {numSelected} selected
         </Typography>
       ) : (
-        <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
-          Nutrition
-        </Typography>
-      )}
+          <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
+            Nutrition
+          </Typography>
+        )}
 
       {numSelected > 0 ? (
         <Tooltip title="Delete">
@@ -186,12 +206,12 @@ const EnhancedTableToolbar = (props) => {
           </IconButton>
         </Tooltip>
       ) : (
-        <Tooltip title="Filter list">
-          <IconButton aria-label="filter list">
-            <FilterListIcon />
-          </IconButton>
-        </Tooltip>
-      )}
+          <Tooltip title="Filter list">
+            <IconButton aria-label="filter list">
+              <FilterListIcon />
+            </IconButton>
+          </Tooltip>
+        )}
     </Toolbar>
   );
 };
@@ -226,7 +246,19 @@ const useStyles = makeStyles((theme) => ({
 
 export default function EnhancedTable(props) {
 
-  const data =  [];
+  const { jsonData } = props;
+
+  let headerCells = [];
+
+  if (jsonData !== null && jsonData !== undefined) {
+    headerCells = HeaderCells(jsonData !== undefined ? jsonData[0] : []);
+  } else {
+    headerCells = []
+  }
+
+  const data = [];
+
+  console.log(jsonData);
 
   const classes = useStyles();
   const [order, setOrder] = React.useState('asc');
@@ -307,15 +339,14 @@ export default function EnhancedTable(props) {
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
               rowCount={rows.length}
+              headCells={headerCells !== [] ? headerCells : []}
             />
             <TableBody>
-              //stableSort(newdata, getComparator(order, orderBy)
-              {data
-                //.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              {jsonData !== undefined ? rows(jsonData)
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
                   const isItemSelected = isSelected(row.name);
                   const labelId = `enhanced-table-checkbox-${index}`;
-
                   return (
                     <TableRow
                       hover
@@ -332,16 +363,20 @@ export default function EnhancedTable(props) {
                           inputProps={{ 'aria-labelledby': labelId }}
                         />
                       </TableCell>
-                      <TableCell component="th" id={labelId} scope="row" padding="none">
-                        {row.name}
+                      <TableCell component="th" id={labelId} scope="row">
+                        {row.stt}
                       </TableCell>
-                      <TableCell align="right">{row.calories}</TableCell>
-                      <TableCell align="right">{row.fat}</TableCell>
-                      <TableCell align="right">{row.carbs}</TableCell>
-                      <TableCell align="right">{row.protein}</TableCell>
+                      <TableCell align="right">{row.cardNumber}</TableCell>
+                      <TableCell align="right">{row.name}</TableCell>
+                      <TableCell align="right">{row.dept}</TableCell>
+                      <TableCell align="right">{row.gender}</TableCell>
+                      <TableCell align="right">{row.startDate}</TableCell>
+                      <TableCell align="right">{row.presenter}</TableCell>
+                      <TableCell align="right">{row.presenterCardNumber}</TableCell>
+                      <TableCell align="right">{row.bp}</TableCell>
                     </TableRow>
                   );
-                })}
+                }) : ''}
               {emptyRows > 0 && (
                 <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
                   <TableCell colSpan={6} />
@@ -368,6 +403,6 @@ export default function EnhancedTable(props) {
   );
 }
 
-// EnhancedTable.propTypes = {
-//   newdata : PropTypes.string.isRequired,
-// };
+EnhancedTable.propTypes = {
+  jsonData: PropTypes.array,
+}

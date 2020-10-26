@@ -21,7 +21,7 @@ const useStyles = makeStyles(() => ({
       position: 'relative',
     },
     layout: {
-      width: '900px',
+      width: "auto",
         margin: "48px auto"
     },
     paper: {

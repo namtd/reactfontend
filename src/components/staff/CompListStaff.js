@@ -7,7 +7,7 @@ import EnhancedTable from '../common/EnhancedTable';
 
 function CompListStaff() {
 
-    const [initState, setInitState] = useState();
+    const [jsonData, setJsonData] = useState();
 
     // useEffect(() => {
     //     console.log('use react hook !');
@@ -27,29 +27,28 @@ function CompListStaff() {
                 const workSheetName = workBook.SheetNames[0];
                 const workSheetData = workBook.Sheets[workSheetName];
                 // Convert text in sheet to json data
-                const jsonData = XLSX.utils.sheet_to_json(workSheetData, { header: 1 });
-                setInitState(jsonData)
-                console.log(jsonData);
+                const res = XLSX.utils.sheet_to_json(workSheetData, { header: 1 });
+                setJsonData(res)
+                console.log(res);
             };
             reader.readAsArrayBuffer(file);
         })
     }, [])
 
-    const { getRootProps, getInputProps } = useDropzone({ onDrop });
-
+    const { getInputProps, getRootProps } = useDropzone({ onDrop });
+    
     return (
         <React.Fragment>
             <Grid container className="container">
                 <Grid item xs={12} {...getRootProps({ className: 'dropzone' })}>
-                    <input {...getInputProps()} />
+                    <input {...getInpu tProps()} />
                     <p>Drag 'n' drop some files here, or click to select files</p>
                 </Grid>
                 <Grid item xs={12}>
                     <h4>Files</h4>
-                    {initState ? initState : ''}
                 </Grid>
             </Grid>
-            <EnhancedTable />
+            <EnhancedTable jsonData={ jsonData }/>
         </React.Fragment>
     );
 }
