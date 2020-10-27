@@ -50,7 +50,7 @@ const rows = (jsonData) => {
   return data;
 };
 
-function descendingComparator(a, b, orderBy) {
+/*function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
   }
@@ -74,7 +74,7 @@ function stableSort(array, comparator) {
     return a[1] - b[1];
   });
   return stabilizedThis.map((el) => el[0]);
-}
+}*/
 
 const HeaderCells = (headCells) => [
   { id: 'stt', numeric: false, disablePadding: true, label: headCells[0] },

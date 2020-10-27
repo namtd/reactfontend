@@ -89,7 +89,6 @@ function Managingstaff() {
     setActiveStep(activeStep - 1);
   };
   const { staffId } = useParams();
-
     return (
         <React.Fragment>
       <CssBaseline />
@@ -129,20 +128,20 @@ function Managingstaff() {
             
                 {getStepContent(activeStep, staffId)}
                 <div className={classes.buttons}>
-                  {activeStep !== 0 && (
+                  {activeStep !== 0 && !staffId && (
                     <Button onClick={handleBack} className={classes.button}>
                       Back
                     </Button>
                   )}
-                  
-                  <Button
+                  {!staffId && (<Button
                     variant="contained"
                     color="primary"
                     onClick={handleNext}
                     className={classes.button}
                   >
-                    {activeStep === steps.length - 1 ? 'Place order' : 'Next'}
-                  </Button>
+                    Next
+                  </Button>)}
+                  
                 </div>
               </React.Fragment>
             )}

@@ -1,8 +1,6 @@
 import React from 'react';
 import './App.css';
-
 import Managingstaff from './pages/Managingstaff';
-import CompAddStaff from './components/staff/CompAddStaff';
 
 import {
   BrowserRouter as Router,

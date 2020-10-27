@@ -1,9 +1,7 @@
-import { editStaff } from '../actions/actStaff';
 import {
     EDIT_STAFF,
 } from '../actionTypes';
 import _ from 'lodash';
-let state ;
 const redStaff = (state = '', action) => {
     switch (action.type) {
         case EDIT_STAFF:
@@ -17,10 +15,12 @@ const redStaff = (state = '', action) => {
                         "cardnumber":  staff[1],
                         "dept":  staff[3],
                         "gender":  staff[4],
+                        "startDate": staff[5],
                     };
                 }
-                return state = result;
+                state = result;
              });
+             return state;
         default :
             return state;
     }
