@@ -14,8 +14,9 @@ import {
 import { makeStyles } from '@material-ui/styles'
 import CompAddStaff from '../components/staff/CompAddStaff';
 import CompListStaff from '../components/staff/CompListStaff';
-
-
+import {
+  useParams,
+} from "react-router-dom";
 const useStyles = makeStyles(() => ({
     appBar: {
       position: 'relative',
@@ -57,12 +58,16 @@ function Copyright() {
 
   const steps = ['Staff Register', 'Payment details', 'Review your order'];
 
-  function getStepContent(step) {
+  function getStepContent(step, staffId) {
+    if(staffId)
+    {
+      step = 0;
+    }
     switch (step) {
       case 0:
-        return <CompAddStaff />;
+        return <CompAddStaff staffId={staffId} />;
        case 1:
-         return <CompListStaff />;
+         return <CompListStaff  />;
     //   case 2:
     //     return <Review />;
       default:
@@ -83,6 +88,7 @@ function Managingstaff() {
   const handleBack = () => {
     setActiveStep(activeStep - 1);
   };
+  const { staffId } = useParams();
 
     return (
         <React.Fragment>
@@ -106,6 +112,7 @@ function Managingstaff() {
               </Step>
             ))}
           </Stepper>
+          
           <React.Fragment>
             {activeStep === steps.length ? (
               <React.Fragment>
@@ -119,13 +126,15 @@ function Managingstaff() {
               </React.Fragment>
             ) : (
               <React.Fragment>
-                {getStepContent(activeStep)}
+            
+                {getStepContent(activeStep, staffId)}
                 <div className={classes.buttons}>
                   {activeStep !== 0 && (
                     <Button onClick={handleBack} className={classes.button}>
                       Back
                     </Button>
                   )}
+                  
                   <Button
                     variant="contained"
                     color="primary"
@@ -138,6 +147,7 @@ function Managingstaff() {
               </React.Fragment>
             )}
           </React.Fragment>
+         
         </Paper>
         <Copyright />
       </main>

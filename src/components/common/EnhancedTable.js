@@ -20,25 +20,18 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
-
-const mapStateToProps = state => ({
-  staffInfo: state,
-})
-
-const mapDispatchToProps = dispatch => {
-
-}
-
+import {
+  Link
+} from "react-router-dom";
 function createData(stt, cardNumber, name, dept, gender, startDate, presenter, presenterCardNumber, bp) {
   return { stt, cardNumber, name, dept, gender, startDate, presenter, presenterCardNumber, bp };
 }
 
 const rows = (jsonData) => {
   let data = [];
-
-  jsonData.map((row) => {
+  jsonData.forEach((row) => {
     if (!isNaN(row[0])) {
-      data.push(createData(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8]));
+      return data.push(createData(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8]));
     }
   })
   //   createData('Cupcake', 305, 3.7, 67, 4.3),
@@ -245,9 +238,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function EnhancedTable(props) {
-
   const { jsonData } = props;
-
   let headerCells = [];
 
   if (jsonData !== null && jsonData !== undefined) {
@@ -256,9 +247,6 @@ export default function EnhancedTable(props) {
     headerCells = []
   }
 
-  const data = [];
-
-  console.log(jsonData);
 
   const classes = useStyles();
   const [order, setOrder] = React.useState('asc');
@@ -364,9 +352,13 @@ export default function EnhancedTable(props) {
                         />
                       </TableCell>
                       <TableCell component="th" id={labelId} scope="row">
-                        {row.stt}
+                        <Link to={{
+                          pathname: '/' + row.stt,
+                        }}>{row.stt}</Link>
                       </TableCell>
-                      <TableCell align="right">{row.cardNumber}</TableCell>
+                      <TableCell align="right">
+                        {row.cardNumber}
+                      </TableCell>
                       <TableCell align="right">{row.name}</TableCell>
                       <TableCell align="right">{row.dept}</TableCell>
                       <TableCell align="right">{row.gender}</TableCell>
